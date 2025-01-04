@@ -28,5 +28,13 @@ fun getButtonBackground(): Color {
 }
 
 fun formatWithCommas(number: Number): String {
-    return number.toString()
+    // Split the float into whole and decimal parts
+    val parts = number.toString().split(".")
+    val wholePart = parts[0]
+    val decimalPart = if (parts.size > 1) "." + parts[1] else ""
+
+    // Format the whole part with commas
+    val formattedWholePart = wholePart.reversed().chunked(3).joinToString(",").reversed()
+
+    return formattedWholePart
 }
