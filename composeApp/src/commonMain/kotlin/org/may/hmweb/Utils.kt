@@ -3,6 +3,7 @@ package org.may.hmweb
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import kotlin.random.Random
 
 @Composable
 fun getContainerColor(): Color {
@@ -37,4 +38,17 @@ fun formatWithCommas(number: Number): String {
     val formattedWholePart = wholePart.reversed().chunked(3).joinToString(",").reversed()
 
     return formattedWholePart
+}
+
+fun getRandomColor(): Color {
+    val colors = listOf(
+        Color(0xff0051ff),
+        Color(0xffffbb00),
+        Color(0xff00fff2),
+        Color(0xff5f05f0),
+        Color(0xfff005cc),
+        Color(0xfffa0036),
+        Color(0xfffa0036),
+    )
+    return colors[Random.nextInt(colors.size)]
 }

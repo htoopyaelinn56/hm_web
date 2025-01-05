@@ -1,6 +1,8 @@
 package org.may.hmweb
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -29,6 +32,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -67,8 +72,8 @@ fun App() {
                     columns = GridCells.Adaptive(200.dp),
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(5.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     items(dummyItemList, key = { it.hashCode() }) {
                         ItemCard(it, onClick = {})
@@ -92,43 +97,58 @@ fun ItemCard(item: ItemData, onClick: () -> Unit) {
         radius = 8.dp,
     )
 
-    Card(
-        modifier = Modifier.size(150.dp, 220.dp)
-            .clickable(interactionSource, indication = rippleIndication, onClick = onClick),
-        border = BorderStroke(1.dp, getItemColor()),
-        shape = RoundedCornerShape(0.dp),
-        colors = CardDefaults.elevatedCardColors().copy(containerColor = getContainerColor())
+    Box(
+        modifier = Modifier
+            .padding(20.dp).clickable(interactionSource,
+                indication = rippleIndication,
+                onClick = onClick)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start
+        // Back card
+        Box(
+            modifier = Modifier
+                .offset(8.dp, 8.dp)
+                .size(240.dp, 230.dp)
+                .clip(RoundedCornerShape(0.dp))
+                .border(3.dp, getItemColor())
+                .background(getRandomColor().copy(alpha = .6f))
+        )
+
+        // Front card
+        Box(
+            modifier = Modifier
+                .size(240.dp, 230.dp)
+                .clip(RoundedCornerShape(0.dp))
+                .border(3.dp, getItemColor())
+                .background(getContainerColor()),
+            contentAlignment = Alignment.Center
         ) {
-            // Display an image
-            SubcomposeAsyncImage(
-                model = item.image,
-                contentDescription = null,
-                modifier = Modifier.height(170.dp),
-                contentScale = ContentScale.Crop
-            )
-
-
+            // Icon
             Column(
-                modifier = Modifier.padding(start = 5.dp)
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
+                SubcomposeAsyncImage(
+                    model = item.image,
+                    contentDescription = null,
+                    modifier = Modifier.weight(1f),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = item.name,
-                    overflow = TextOverflow.Ellipsis,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
-                    color = getItemColor(),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
+                    color = Color.Black,
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
                 )
                 Text(
                     text = "${formatWithCommas(item.price)} Ks",
-                    overflow = TextOverflow.Ellipsis,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
-                    color = getItemColor(),
-                    textAlign = TextAlign.Center
+                    color = Color.Black,
+                    textAlign = TextAlign.Start,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
                 )
+                Spacer(modifier = Modifier.height(5.dp))
             }
         }
     }
