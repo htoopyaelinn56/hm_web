@@ -1,18 +1,19 @@
 package org.may.hmweb
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -26,18 +27,20 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
@@ -46,110 +49,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
-    androidx.compose.material3.MaterialTheme(
+    MaterialTheme(
         colorScheme = if (isSystemInDarkTheme()) MyTheme.DarkColorScheme else MyTheme.LightColorScheme,
     ) {
-        Scaffold(
-            backgroundColor = getContainerColor(),
-            topBar = {
-                TopAppBar(
-                    backgroundColor = getContainerColor(), title = {
-                        Text(
-                            "H&M",
-                            fontWeight = FontWeight.W200,
-                            fontSize = 25.sp,
-                            color = getItemColor(),
-                        )
-                    }, elevation = 8.dp
-                )
-            },
-        ) { padding ->
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.padding(padding).fillMaxSize()
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(200.dp),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(5.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
-                    horizontalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    items(dummyItemList, key = { it.hashCode() }) {
-                        ItemCard(it, onClick = {})
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(70.dp))
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ItemCard(item: ItemData, onClick: () -> Unit) {
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val rippleIndication = ripple(
-        bounded = true,
-        radius = 8.dp,
-    )
-
-    Box(
-        modifier = Modifier
-            .padding(20.dp).clickable(interactionSource,
-                indication = rippleIndication,
-                onClick = onClick)
-    ) {
-        // Back card
-        Box(
-            modifier = Modifier
-                .offset(8.dp, 8.dp)
-                .size(240.dp, 230.dp)
-                .clip(RoundedCornerShape(0.dp))
-                .border(3.dp, getItemColor())
-                .background(getRandomColor().copy(alpha = .6f))
-        )
-
-        // Front card
-        Box(
-            modifier = Modifier
-                .size(240.dp, 230.dp)
-                .clip(RoundedCornerShape(0.dp))
-                .border(3.dp, getItemColor())
-                .background(getContainerColor()),
-            contentAlignment = Alignment.Center
-        ) {
-            // Icon
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                SubcomposeAsyncImage(
-                    model = item.image,
-                    contentDescription = null,
-                    modifier = Modifier.weight(1f),
-                    contentScale = ContentScale.Crop
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = item.name,
-                    color = Color.Black,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
-                Text(
-                    text = "${formatWithCommas(item.price)} Ks",
-                    color = Color.Black,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-            }
-        }
+        HomePage()
     }
 }

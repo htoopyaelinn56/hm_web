@@ -12,6 +12,12 @@ fun getContainerColor(): Color {
 }
 
 @Composable
+fun getScaffoldBackgroundColor(): Color {
+    return if (isSystemInDarkTheme()) Color.Black.copy(alpha = .9f)
+    else Color.White
+}
+
+@Composable
 fun getItemColor(): Color {
     return if (isSystemInDarkTheme()) Color.White
     else Color.Black
@@ -39,6 +45,7 @@ fun formatWithCommas(number: Number): String {
 
     return formattedWholePart
 }
+
 
 fun getRandomColor(): Color {
     val colors = listOf(
