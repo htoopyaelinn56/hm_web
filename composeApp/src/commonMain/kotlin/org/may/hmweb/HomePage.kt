@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
@@ -61,16 +62,17 @@ fun HomePage(){
             )
         },
     ) { padding ->
+
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.padding(padding).fillMaxSize()
         ) {
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(200.dp),
+                columns =  if(isMobileScreen()) GridCells.Fixed(2)  else GridCells.Adaptive(230.dp),
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(5.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                horizontalArrangement = Arrangement.spacedBy(20.dp)
+                verticalArrangement = Arrangement.spacedBy( if(isMobileScreen())10.dp else  20.dp),
+                horizontalArrangement = Arrangement.spacedBy( if(isMobileScreen()) 10.dp else 20.dp)
             ) {
                 items(dummyItemList, key = { it.hashCode() }) {
                     ItemCard(it, onClick = {})
@@ -104,7 +106,7 @@ fun ItemCard(item: ItemData, onClick: () -> Unit) {
     val offsetY by animateDpAsState(targetValue = if (isHovered) 16.dp else 0.dp)
 
     Box(
-        modifier = Modifier.padding(20.dp).clickable(
+        modifier = Modifier.padding(if(isMobileScreen()) 10.dp else 20.dp).clickable(
             interactionSource, indication = rippleIndication, onClick = onClick
         ).hoverable(
             interactionSource = interactionSource,
@@ -114,7 +116,7 @@ fun ItemCard(item: ItemData, onClick: () -> Unit) {
     ) {
         // Back card
         Card(
-            modifier = Modifier.offset(8.dp, 8.dp).size(240.dp, 230.dp),
+            modifier = Modifier.offset(8.dp, 8.dp).size(240.dp,if(isMobileScreen()) 200.dp else 230.dp),
             colors = CardDefaults.cardColors().copy(containerColor = offsetCardColor),
             border = BorderStroke((1.5).dp, getItemColor()),
             shape = RoundedCornerShape(18.dp)
@@ -122,7 +124,7 @@ fun ItemCard(item: ItemData, onClick: () -> Unit) {
 
         // Front card
         Card(
-            modifier = Modifier.offset(offsetX, offsetY).size(240.dp, 230.dp),
+            modifier = Modifier.offset(offsetX, offsetY).size(240.dp,if(isMobileScreen()) 200.dp else 230.dp),
             colors = CardDefaults.cardColors().copy(containerColor = getContainerColor()),
             border = BorderStroke((1.5).dp, getItemColor()),
             shape = RoundedCornerShape(14.dp)

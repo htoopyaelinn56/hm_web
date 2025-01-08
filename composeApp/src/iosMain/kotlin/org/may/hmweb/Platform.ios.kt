@@ -7,3 +7,6 @@ class IOSPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+actual fun getScreenWidth(): Int {
+    TODO("Not yet implemented")
+}

@@ -59,3 +59,7 @@ fun getRandomColor(): Color {
     )
     return colors[Random.nextInt(colors.size)]
 }
+
+fun isMobileScreen() : Boolean{
+    return getScreenWidth() < 760
+}

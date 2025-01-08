@@ -69,7 +69,6 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil3.coil.network.ktor3)
             implementation(libs.material.kolor)
-            implementation("androidx.navigation:navigation-compose:2.8.5")
         }
     }
 }
