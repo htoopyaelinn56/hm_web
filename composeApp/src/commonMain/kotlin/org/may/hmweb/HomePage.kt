@@ -40,24 +40,19 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
 
 @Composable
-fun HomePage(){
+fun HomePage(onTapToDetail: (ItemData) -> Unit){
     Scaffold(
         backgroundColor = getScaffoldBackgroundColor(),
         topBar = {
             TopAppBar(
                 backgroundColor = getScaffoldBackgroundColor(), title = {
-                    Row(
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            "H&M",
-                            fontWeight = FontWeight.W200,
-                            fontSize = 25.sp,
-                            color = getItemColor(),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
+                    Text(
+                        "H&M",
+                        fontWeight = FontWeight.W200,
+                        fontSize = 25.sp,
+                        color = getItemColor(),
+                        textAlign = TextAlign.Center,
+                    )
                 }, elevation = 20.dp
             )
         },
@@ -75,7 +70,9 @@ fun HomePage(){
                 horizontalArrangement = Arrangement.spacedBy( if(isMobileScreen()) 10.dp else 20.dp)
             ) {
                 items(dummyItemList, key = { it.hashCode() }) {
-                    ItemCard(it, onClick = {})
+                    ItemCard(it, onClick = {
+                        onTapToDetail(it)
+                    })
                 }
 
                 item {

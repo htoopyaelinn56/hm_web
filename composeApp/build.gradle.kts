@@ -69,6 +69,7 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil3.coil.network.ktor3)
             implementation(libs.material.kolor)
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
         }
     }
 }
