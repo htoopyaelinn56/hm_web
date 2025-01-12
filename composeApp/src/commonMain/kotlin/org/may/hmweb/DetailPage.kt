@@ -40,7 +40,8 @@ fun DetailPage(onPop: () -> Unit, itemData: ItemData?) {
                     IconButton(onClick = onPop) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
+                            tint = getItemColor()
                         )
                     }
                 },
